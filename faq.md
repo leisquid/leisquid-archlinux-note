@@ -19,4 +19,5 @@ git config --global http.sslVerify false
 ## Plasma 启动器不更新
 
 (1) 删除 `~/.config/Trolltech.conf`。
+
 (2) 执行 `kbuildsycoca5 --noincremental`。
