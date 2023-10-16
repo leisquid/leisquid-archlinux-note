@@ -1,4 +1,4 @@
-# leisquid-archlinux-note.git
+# leisquid-archlinux-note
 
 ## 简介
 
