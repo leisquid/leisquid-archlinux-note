@@ -2,6 +2,8 @@
 
 （以 UEFI 环境为例）
 
+本文采用 **CC BY-NC-SA 4.0** 协议授权
+
 ## 1. 安装前的准备（略）
 
 ## 2. 启动到 Live 环境
@@ -81,3 +83,78 @@ mount /dev/efi_system_partition /mnt/boot
 ```
 
 ### (7) 更改镜像源
+
+镜像源的文件位于：`/etc/pacman.d/mirrorlist`。
+
+可以使用清华 TUNA 源或者中科大源：
+
+```
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
+```
+
+也可以用以下命令智能匹配最快的源，以中国为例：
+
+```sh
+reflector -c China -a 10 --sort rate --save /etc/pacman.d/mirrorlist
+```
+
+### (8) 安装必需的软件包
+
+```sh
+pacstrap /mnt base base-devel linux linux-firmware dhcpcd
+```
+
+其中内核可以替换成：
+
+| 内核名 | 解释 |
+| ---- | ---- |
+| linux-hardened | 加固内核 |
+| linux-lts | 长期支持的内核 |
+| linux-zen | 最适合日用的内核 |
+
+## 3. 基本安装后配置
+
+### (1) 配置 fstab
+
+```sh
+genfstab -L /mnt >> /mnt/stc/fstab
+```
+
+### (2) chroot
+
+```sh
+arch-chroot /mnt
+```
+
+### (3) 设置时区，以上海为例
+
+```sh
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+```
+
+### (4) 提前安装必要软件包
+
+```sh
+pacman -S # 这里跟上你想安装的包，以空格隔开
+```
+
+建议可以安装以下包：
+
+| 包名 | 用途 |
+| ---- | ---- |
+| dialog | 在 shell 脚本显示对话框的工具 |
+| wpa_supplicant | 无线网支持 |
+| ntfs-3g | NTFS 驱动及工具 |
+| networkmanager | 网络连接管理及用户工具 |
+| netctl | 网络管理 |
+| vim | 文本编辑器 |
+| nano | 文本编辑器，比 vim 易用 |
+
+### (5) 设置 locale
+
+打开 `/etc/locale.gen`，反注释 `zh_CN.UTF-8`、`en_US.UTF-8`，然后执行 `locale-gen`。
+
+### (6) 配置系统语言
+
+打开（创建）`/etc/locale.conf`，添加内容：`LANG=en_US.UTF-8`。
