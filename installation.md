@@ -212,7 +212,7 @@ umount /mnt
 reboot
 ```
 
-## 4. 安装后进行配置
+## 4. 安装后配置
 
 完成上面的重启步骤后，会进入到新安装的系统里。
 
@@ -238,3 +238,67 @@ passwd your_username                # 给这个新用户设置一个密码
 ```sh
 pacman -S sudo
 ```
+
+虽然一般修改 sudo 配置文件需要用到 vi，但是可以将任一编辑器改为用于修改 sudo 配置文件的编辑器。可以临时设置环境变量。比如：
+
+```sh
+EDITOR=nano visudo
+```
+
+找到 `# %wheel ALL = (ALL) ALL` 这一行并反注释。保存配置文件后重启，以新用户登录并连网。
+
+## 5. 安装图形界面
+
+### (1) 安装显卡驱动
+
+| Brand | Type | Driver | OpenGL |
+| :----: | :----: | :----: | :----: |
+| AMD / ATI | open source | xf86-video-amdgpu | mesa |
+| ↑ | ↑ | xf86-video-ati | ↑ |
+| ↑ | proprietary | catalyst (AUR) | catalyst-libgl (AUR) |
+| Intel | open source | xf86-video-intel | mesa |
+| Nvidia | open source | xf86-video-nouveau | mesa |
+| ↑ | propriety | nvidia | nvdida-utils |
+| ↑ | ↑ | nvidia-340xx | nvidia-340xx-utils |
+| ↑ | ↑ | nvidia-304xx | nvidia-304xx-utils |
+
+### (2) 安装 xorg
+
+```sh
+sudo pacman -S xorg
+```
+
+### (3) 安装桌面环境
+
+如安装 Xfce，则安装 xfce4、xfce-goodies；
+如安装 KDE Plasma，则安装 plasma、kde-applications。
+
+```sh
+# 以下命令根据您对桌面环境的需求二选一。
+sudo pacman -S xfce4 xfce-goodies
+sudo pacman -S plasma kde-applications
+```
+
+### (4) 安装桌面管理器，以 sddm 为例
+
+安装 sddm，并配置开机启动：
+
+```sh
+sudo pacman -S sddm
+sudo systemctl enable sddm
+```
+
+### (5) 提前配置网络
+
+用 KDE 的工具接管网络配置。
+
+```sh
+sudo systemctl disable netctl
+sudo systemctl enable NetworkManager
+```
+
+确保安装了 network-manager-applet。
+
+### (6) 重启
+
+重启后进入图形环境。您在登录后可根据需要对系统和图形环境进行进一步配置。
