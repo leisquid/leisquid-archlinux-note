@@ -158,3 +158,83 @@ pacman -S # 这里跟上你想安装的包，以空格隔开
 ### (6) 配置系统语言
 
 打开（创建）`/etc/locale.conf`，添加内容：`LANG=en_US.UTF-8`。
+
+### (7) 设置主机名
+
+创建 `/etc/hostname`，输入主机名。
+
+### (8) 配置 `/etc/hosts`
+
+```
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   your_hostname.localdomain   your_hostname
+```
+
+其中 `your_hostname` 替换为你在上一步设置的主机名，如果你的主机所在的网络内定义了域名，可将 `localdomain` 替换为你的域名。
+
+### (9) 设置 root 密码
+
+执行 `passwd`。
+
+### (10) 启用微码更新
+
+AMD 处理器安装 amd-ucode；Intel 处理器安装 intel-ucode。
+
+### (11) 安装引导程序，以 grub2 为例
+
+安装 grub 和 efibootmgr。
+
+```sh
+pacman -S grub efibootmgr
+```
+
+部署 grub：
+
+```sh
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+```
+
+生成配置文件：
+
+```sh
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+中文环境下执行上面的指令可以生成含中文配置的配置文件。
+
+### (12) 重启
+
+```sh
+exit    # 或者按 Control+D
+umount /mnt/boot
+umount /mnt
+reboot
+```
+
+## 4. 安装后进行配置
+
+完成上面的重启步骤后，会进入到新安装的系统里。
+
+### (1) 连网
+
+有线网用 dhcpcd，无线网用 wifi-menu。
+
+### (2) 新建一个普通用户
+
+在 root 环境下操作有风险，建议日常使用时以普通用户登录并使用。
+
+新建一个用户组并将其加入到组 wheel，这样可以使用 sudo 的一些功能。
+
+```sh
+useradd -m -G wheel your_username   # 将 username 替换为你想起的用户名
+passwd your_username                # 给这个新用户设置一个密码
+```
+
+### (3) 配置 sudo
+
+如果没安装，就先安装 sudo。
+
+```sh
+pacman -S sudo
+```
