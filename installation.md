@@ -136,7 +136,7 @@ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ### (4) 提前安装必要软件包
 
 ```sh
-pacman -S # 这里跟上你想安装的包，以空格隔开
+pacman -S # 这里跟上您想安装的包，以空格隔开
 ```
 
 建议可以安装以下包：
@@ -171,7 +171,7 @@ pacman -S # 这里跟上你想安装的包，以空格隔开
 127.0.1.1   your_hostname.localdomain   your_hostname
 ```
 
-其中 `your_hostname` 替换为你在上一步设置的主机名，如果你的主机所在的网络内定义了域名，可将 `localdomain` 替换为你的域名。
+其中 `your_hostname` 替换为您在上一步设置的主机名，如果您的主机所在的网络内定义了域名，可将 `localdomain` 替换为您的域名。
 
 ### (9) 设置 root 密码
 
@@ -227,7 +227,7 @@ reboot
 新建一个用户组并将其加入到组 wheel，这样可以使用 sudo 的一些功能。
 
 ```sh
-useradd -m -G wheel your_username   # 将 username 替换为你想起的用户名
+useradd -m -G wheel your_username   # 将 username 替换为您想起的用户名
 passwd your_username                # 给这个新用户设置一个密码
 ```
 
@@ -290,7 +290,7 @@ sudo systemctl enable sddm
 
 ### (5) 提前配置网络
 
-用 KDE 的工具接管网络配置。
+用更好一点的工具接管网络配置。
 
 ```sh
 sudo systemctl disable netctl
