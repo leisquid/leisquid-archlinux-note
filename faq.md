@@ -2,11 +2,15 @@
 
 本文采用 **CC BY-NC-SA 4.0** 协议授权
 
+## 前面
+
+如无特殊说明，“以 root 权限执行” 指的是通过执行 `su` 登录到 root 帐户执行，或者在执行的命令前加上 `sudo ` 临时提权执行。使用 sudo 前请确保您登录的帐户可以使用 sudo。
+
 ## 将硬件时间设置为 localtime
 
 Arch Linux 默认会将硬件时间视为 UTC 时间。如果电脑安装了 Windows 等其他系统，会导致系统时间混乱。有一种办法是让 Arch 做出妥协，将硬件时间作为本地时间。
 
-以下命令需要 root 权限执行。
+以 root 权限执行：
 
 ```sh
 timadatectl set-local-rtc 1
@@ -34,16 +38,16 @@ git config --global http.sslVerify false
 
 启用方法有以下几种，如前一种方法不管用，可使用下一种方法。
 
-(1) 使用 root 权限执行：
+(1) 以 root 权限执行：
 
 ```sh
 echo "1" > /proc/sys/kernel/sysrq
 ```
 
-(2) 使用 root 权限执行：
+(2) 以 root 权限执行：
 
 ```sh
-echo "kernel.sysrl = 1" > /etc/sysctl.d/99-sysctl.conf
+echo "kernel.sysrq = 1" > /etc/sysctl.d/99-sysctl.conf
 ```
 
 (3) 添加内核启动参数：`sysrq_always_enabled=1`
@@ -108,3 +112,130 @@ GRUB 配置文件在 `/etc/default/grub`。编辑文件后需要以 root 权限�
 ### (2) 启用 os-prober 以探测其他操作系统
 
 反注释 `GRUB_DISABLE_OS_PROBER=false`。
+
+## KDE Plasma 升级故障
+
+可通过尝试清理缓存解决。
+
+```sh
+rm -rf ~/.cache/*
+```
+
+## 由于 Windows 休眠，NTFS 分区不能被读写
+
+以 root 权限执行：
+
+```sh
+umount /mount_point # 改成有问题的分区挂载点
+ntfs-3g -o remove_hiberfile /dev/partition /mount_point # 分别改成有问题的分区和有问题的挂载点
+```
+
+## Plasma 不尊重区域/语言设置
+
+(1) 删除 `~/.config/plasma-localerc` 后重新登录；
+
+(2) 手动编辑 `~/.config/plasma-localerc`：
+
+```
+[Formats]
+LANG=zh_CN.UTF-8
+
+[Translations]
+LANGUAGE=zh_CN:en_US
+```
+
+## pip 换源
+
+(1) 以下是可用的源：
+
+```
+https://pypi.tuna.tsinghua.edu.cn/simple/
+https://mirrors.aliyun.com/pypi/simple/
+https://pypi.mirrors.ustc.edu.cn/simple/
+```
+
+(2) 临时换源
+
+```sh
+pip install packages_to_be_installed -i mirror_url
+```
+
+(3) 全局换源/换回源
+
+```sh
+pip config set global.index-url mirror_url
+pip config unset global.index-url mirror_url
+```
+
+## Mplayer 播放 CD 时声音断断续续
+
+需要 `-cache` 选项让软件提前缓冲。
+
+```sh
+mplayer cdda://:1 -cache 1024
+```
+
+其中 `:1` 是为了让光驱降速以稳定旋转并减少噪声。
+
+## Plasma 与打印服务问题
+
+安装 cups 并配置服务启动和开机自启。
+
+## Pacman 的 key 问题
+
+以 root 权限执行：
+
+```sh
+pacman-key --init
+pacman-key --populate
+```
+
+## 在 Linux 中使用 VLC 播放 Blu-ray
+
+(1) 安装 libbluray 和 libaacs。
+
+(2) 从 http://fvonline-db.bplaced.net 下载需要的 KEYDB.cfg 并复制到 `~/.config/aacs/`。建议建立一个同名但是全大写/小写的文件名的软链。
+
+(3) （可选）复制 https://forum.doom9.org/showpost.php?p=1883655&postcount=3 提供的 PK and Host K/C data 到 KEYDB.cfg 的头部。
+
+(4) 挂载光盘，以 root 权限执行：
+
+```sh
+mount /dev/sr0 /mnt/bluray  # 块设备和挂载点根据自己的实际情况修改
+```
+
+(5) 查询是否可以解码：
+
+```sh
+bd_info /dev/sr0 | grep "AACS handled"  # 块设备根据自己的实际情况修改
+```
+
+如果输出了 `yes`，说明可以解码
+
+(6) 如果到此还是不能解码，那么说明光盘内容也有可能是 BD+ 加密的，这时还需要安装 libbdplus (AUR)，不然只能使用 MakeMKV (AUR) 或 DVDFab (under Wine) 这样的商业方案了。
+
+(7) 如果在读取 RTSP 流、DVB-T 流或 Blu-rays 时，VLC 似乎始终在缓冲而且没有报错，则需要安装 aribb24。
+
+其他软件如 MPlayer、Xine 也能播放 Blu-ray，但还是 VLC 的综合体验更好。
+
+其他问题，参见：https://wiki.archlinux.org/title/Blu-ray#Playback。
+
+## 安装 Wine 的一些注意事项
+
+(1) 需要启用 multilib 仓库。
+
+(2) 安装的包及描述：
+
+| 包 | 描述 |
+| ---- | ---- |
+| wine | Wine 主程序 |
+| wine-mono | .NET 程序支持 |
+| winetricks | 一个魔改程序 |
+| lib32-alsa-lib | ALSA 声音驱动包 |
+| lib32-alsa-plugins | 上同 |
+
+(3) 配置文件夹路径：`~/.wine/`
+
+(4) 配置缩放
+
+运行 winecfg，将 DPI 改为 (96 * 放大倍数)。
