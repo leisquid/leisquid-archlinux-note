@@ -118,7 +118,7 @@ pacstrap /mnt base base-devel linux linux-firmware dhcpcd
 ### (1) 配置 fstab
 
 ```sh
-genfstab -L /mnt >> /mnt/stc/fstab
+genfstab -L /mnt >> /mnt/etc/fstab
 ```
 
 ### (2) chroot
