@@ -99,7 +99,9 @@ pacman -Rns $(pacman -Qdtq)
 
 全局配置文件位于 `/etc/fonts/local.conf`，使用 XML 语言，在图形界面下对所有用户有效。参见 [fonts-local.conf](./fonts-local.conf)。
 
-另外近期发现，实际上系统会对字体进行匹配度的评测，有些字体即使用 `<alias>` `<prefer>` 标签包裹，也可能会因为评测后名称和特征不如其他字体的匹配度更高而被评为“弱匹配”候选导致最终匹配失败。可以使用 `<match>` `<test>` `<edit>` 等标签进行强匹配绑定。这部分代码要写在 `<fontconfig>` 标签内，示例代码如下：
+另外近期发现，实际上系统会对字体进行匹配度的评测，有些字体即使用 `<alias>` `<prefer>` 标签包裹，也可能会因为评测后名称和特征不如其他字体的匹配度更高而被评为“弱匹配”候选导致最终匹配失败。可以使用 `<match>` `<test>` `<edit>` 等标签进行强匹配绑定。这部分代码要写在 `<fontconfig>` 标签内。
+
+下面的示例代码是将 Source Code Pro 这款等宽字体与字体名 “monospace” 进行强（制）匹配，并使用简体中文字体 “思源黑体” 作为后备字体：
 
 ```xml
 <match target="pattern">
