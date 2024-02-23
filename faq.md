@@ -252,3 +252,7 @@ bd_info /dev/sr0 | grep "AACS handled"  # 块设备根据自己的实际情况�
 (4) 配置缩放
 
 运行 winecfg，将 DPI 改为 (96 * 放大倍数)。
+
+## 国内环境获取 oh-my-zsh
+
+请访问 <https://help.mirrors.cernet.edu.cn/ohmyzsh.git/>。
