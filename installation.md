@@ -86,10 +86,11 @@ mount /dev/efi_system_partition /mnt/boot
 
 镜像源的文件位于：`/etc/pacman.d/mirrorlist`。
 
-可以使用清华 TUNA 源或者中科大源：
+可以使用清华 TUNA 源、北京外国语大学源或者中科大源：
 
 ```
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+Server = https://mirrros.bfsu.edu.cn/archlinux/$repo/os/$arch
 Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
 ```
 
