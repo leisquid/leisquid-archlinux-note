@@ -95,6 +95,12 @@ reflector -c China -a 10 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Rns $(pacman -Qdtq)
 ```
 
+其中各选项的作用如下：
+
+```sh
+pacman --remove --nosave --recursive $(pacman --query --deps --unrequired --quiet)
+```
+
 ## 字体的全局配置
 
 全局配置文件位于 `/etc/fonts/local.conf`，使用 XML 语言，在图形界面下对所有用户有效。参见 [fonts-local.conf](./fonts-local.conf)。
