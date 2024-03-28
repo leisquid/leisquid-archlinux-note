@@ -269,7 +269,7 @@ bd_info /dev/sr0 | grep "AACS handled"  # 块设备根据自己的实际情况�
 >
 > “Oh My Zsh” is a delightful, open source, community-driven framework for managing your Zsh configuration. It comes bundled with thousands of helpful functions, helpers, plugins, themes, and a few things that make you shout...
 
-# Z Shell 的一些主题或者插件的 GitHub 地址
+## Z Shell 的一些主题或者插件的 GitHub 地址
 
 * Powerlevel10k 主题: <https://github.com/romkatv/powerlevel10k.git>
 
