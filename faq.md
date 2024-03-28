@@ -264,3 +264,27 @@ bd_info /dev/sr0 | grep "AACS handled"  # 块设备根据自己的实际情况�
 ## 国内环境获取 oh-my-zsh
 
 请访问 <https://help.mirrors.cernet.edu.cn/ohmyzsh.git/>。
+
+> 什么是 **Oh My Zsh**？
+>
+> “Oh My Zsh” is a delightful, open source, community-driven framework for managing your Zsh configuration. It comes bundled with thousands of helpful functions, helpers, plugins, themes, and a few things that make you shout...
+
+# Z Shell 的一些主题或者插件的 GitHub 地址
+
+* Powerlevel10k 主题: <https://github.com/romkatv/powerlevel10k.git>
+
+```bash
+git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k --depth=1
+```
+
+* Zsh 自动建议: <https://github.com/zsh-users/zsh-autosuggestions.git>
+
+```bash
+git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions --depth=1
+```
+
+* Zsh 语法高亮: <https://github.com/zsh-users/zsh-syntax-highlighting.git>
+
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting --depth=1
+```
