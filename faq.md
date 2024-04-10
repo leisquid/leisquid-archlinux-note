@@ -288,3 +288,62 @@ git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugi
 ```bash
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting --depth=1
 ```
+
+## 安装 Oh-my-zsh 后，`ls` 别名的定义跑哪去了？
+
+通常，在安装 Oh-my-zsh 后，`ls`、`l`、`ll` 等命令的别名也被修改了。
+
+`ls` 别名的定义位于：
+
+    ~/.oh-my-zsh/lib/theme-and-appearance.zsh
+
+这里关于 `ls` 别名的定义是使其启用颜色输出，代码片段如下：
+
+```shell
+# Find the option for using colors in ls, depending on the version
+case "$OSTYPE" in
+  netbsd*)
+    # On NetBSD, test if `gls` (GNU ls) is installed (this one supports colors);
+    # otherwise, leave ls as is, because NetBSD's ls doesn't support -G
+    test-ls-args gls --color && alias ls='gls --color=tty'
+    ;;
+  openbsd*)
+    # On OpenBSD, `gls` (ls from GNU coreutils) and `colorls` (ls from base,
+    # with color and multibyte support) are available from ports.
+    # `colorls` will be installed on purpose and can't be pulled in by installing
+    # coreutils (which might be installed for ), so prefer it to `gls`.
+    test-ls-args gls --color && alias ls='gls --color=tty'
+    test-ls-args colorls -G && alias ls='colorls -G'
+    ;;
+  (darwin|freebsd)*)
+    # This alias works by default just using $LSCOLORS
+    test-ls-args ls -G && alias ls='ls -G'
+    # Only use GNU ls if installed and there are user defaults for $LS_COLORS,
+    # as the default coloring scheme is not very pretty
+    zstyle -t ':omz:lib:theme-and-appearance' gnu-ls \
+      && test-ls-args gls --color \
+      && alias ls='gls --color=tty'
+    ;;
+  *)
+    if test-ls-args ls --color; then
+      alias ls='ls --color=tty'
+    elif test-ls-args ls -G; then
+      alias ls='ls -G'
+    fi
+    ;;
+esac
+```
+
+而 `l`、`ll` 等命令的别名的定义则位于：
+
+    ~/.oh-my-zsh/lib/directories.zsh
+
+代码片段如下：
+
+```shell
+# List directory contents
+alias lsa='ls -lah'
+alias l='ls -lah'
+alias ll='ls -lh'
+alias la='ls -lAh'
+```
