@@ -202,6 +202,8 @@ mplayer cdda://:1 -cache 1024
 
 安装 cups 并配置服务启动和开机自启。
 
+另外，如无必要，请停止并禁用 `cups-browsed.service`，否则它会查找并安装网络中的每一台联机打印机，而且都给安装上 driverless 驱动。
+
 ## Pacman 的 key 问题
 
 以 root 权限执行：
